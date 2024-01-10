@@ -1010,18 +1010,14 @@ export function specificityCompare(
   o2: object | RuntimeStyle,
   treatAsInline = false,
 ) {
-  // fix issue https://github.com/marklawlor/nativewind/issues/677
-  if (o1 || o2) {
-    return 0;
-  }
   // inline styles have no specificity and the order is preserved
-  if (!("specificity" in o1) || !("specificity" in o2)) {
+  // fix issue https://github.com/marklawlor/nativewind/issues/677
+  if (typeof o1 === 'object' && (!("specificity" in o1)) || (typeof o1 === 'object' && !("specificity" in o2))) {
     return 0;
   }
 
-
-  const a = o1.specificity;
-  const b = o2.specificity;
+  const a = (o1 as RuntimeStyle).specificity;
+  const b = (o2 as RuntimeStyle).specificity;
 
   if (a.I !== b.I) {
     // Important
